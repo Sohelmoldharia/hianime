@@ -5,8 +5,6 @@ import alternatives from "../data/alternatives";
 import siteConfig from "../data/siteConfig";
 
 export default function Home() {
-  const top5 = alternatives.slice(0, 5);
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -25,174 +23,161 @@ export default function Home() {
         addressCountry: "US",
       },
     },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteConfig.siteUrl}/alternatives`,
-      "query-input": "required name=search_term_string",
-    },
   };
+
+  const faqData = [
+    {
+      q: "What is the best HiAnime alternative?",
+      a: `The best HiAnime alternatives include ${alternatives.slice(0, 3).map((a) => a.name).join(", ")}. These sites offer similar features to HiAnime with large anime libraries, HD streaming, and both subbed and dubbed content.`,
+    },
+    {
+      q: "Are HiAnime alternatives free?",
+      a: "Yes, most HiAnime alternatives listed on our site are completely free to use. They offer free anime streaming with subbed and dubbed options without requiring a subscription.",
+    },
+    {
+      q: "What happened to HiAnime?",
+      a: "HiAnime has experienced various domain changes and accessibility issues over time. Many users seek HiAnime alternatives to ensure uninterrupted access to their favorite anime content.",
+    },
+    {
+      q: "Which HiAnime alternative has no ads?",
+      a: "Several HiAnime alternatives offer ad-free experiences, including Zoro.to and AniWatch. These platforms provide clean, uninterrupted anime streaming without pop-ups or intrusive advertisements.",
+    },
+  ];
 
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "What is the best HiAnime alternative?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `The best HiAnime alternatives include ${alternatives
-            .slice(0, 3)
-            .map((a) => a.name)
-            .join(
-              ", "
-            )}. These sites offer similar features to HiAnime with large anime libraries, HD streaming, and both subbed and dubbed content.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Are HiAnime alternatives free?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes, most HiAnime alternatives listed on our site are completely free to use. They offer free anime streaming with subbed and dubbed options without requiring a subscription.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What happened to HiAnime?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "HiAnime has experienced various domain changes and accessibility issues over time. Many users seek HiAnime alternatives to ensure uninterrupted access to their favorite anime content.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Which HiAnime alternative has no ads?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Several HiAnime alternatives offer ad-free experiences, including Zoro.to and AniWatch. These platforms provide clean, uninterrupted anime streaming without pop-ups or intrusive advertisements.",
-        },
-      },
-    ],
+    mainEntity: faqData.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
   };
 
   return (
     <>
       <SEO path="/" jsonLd={jsonLd} />
 
-      <section className="hero">
-        <div className="container">
-          <h1>Best HiAnime Alternatives for Free Anime Streaming in 2026</h1>
-          <p className="hero-sub">
-            Looking for the best <strong>HiAnime alternative</strong>? Discover
-            our handpicked list of the top free anime streaming sites that work
-            just like HiAnime. All sites are tested and updated regularly.
-          </p>
-          <Link to="/alternatives" className="cta-btn">
-            View All HiAnime Alternatives &rarr;
+      <div className="content-wrap">
+        {/* Top Info */}
+        <div className="top-info">
+          <h1>Best HiAnime Alternatives for Free Anime Streaming</h1>
+          Curated index of the best <strong>HiAnime alternative</strong> sites for anime streaming
+          <div className="last-update">
+            Last update : {new Date().toLocaleDateString("en-US")} ·{" "}
+            <Link to="/about" style={{ color: "gray" }}>About ℹ</Link>
+          </div>
+        </div>
+
+        {/* Jump Menu */}
+        <div className="jump-menu">
+          <a href="#sec-streaming" className="jump-box" style={{ backgroundColor: "#20281e" }}>
+            <span className="jump-icon">▶</span>Streaming
+          </a>
+          <a href="#sec-adfree" className="jump-box" style={{ backgroundColor: "#2a2739" }}>
+            <span className="jump-icon">✦</span>Ad-Free
+          </a>
+          <a href="#sec-hybrid" className="jump-box" style={{ backgroundColor: "#2f2920" }}>
+            <span className="jump-icon">⇅</span>Hybrid
+          </a>
+          <Link to="/alternatives" className="jump-box" style={{ backgroundColor: "#20332d" }}>
+            <span className="jump-icon">★</span>View All
           </Link>
+          <Link to="/about" className="jump-box">
+            <span className="jump-icon">ℹ</span>About
+          </Link>
+          <Link to="/contact" className="jump-box">
+            <span className="jump-icon">✉</span>Contact
+          </Link>
+          <a href="/rss.xml" className="jump-box">
+            <span className="jump-icon">◉</span>RSS Feed
+          </a>
+          <a href="/sitemap.xml" className="jump-box">
+            <span className="jump-icon">◧</span>Sitemap
+          </a>
         </div>
-      </section>
 
-      <section className="section">
-        <div className="container">
-          <h2>Top 5 HiAnime Alternatives</h2>
+        {/* Main Alternatives Section */}
+        <div id="sec-streaming" className="section" style={{ border: "1px solid #20281e" }}>
+          <div className="section-title" style={{ backgroundColor: "#20281e" }}>
+            <span className="sec-icon">▶</span>
+            HiAnime Alternatives - Anime Streaming{" "}
+            <span className="sec-count">({alternatives.filter((s) => s.category === "streaming").length})</span>
+          </div>
+          <div className="section-list">
+            {alternatives
+              .filter((s) => s.category === "streaming")
+              .map((site, i) => (
+                <AlternativeCard key={site.name} site={site} rank={i + 1} />
+              ))}
+          </div>
+        </div>
+
+        {/* Ad-Free Section */}
+        <div id="sec-adfree" className="section" style={{ border: "1px solid #2a2739" }}>
+          <div className="section-title" style={{ backgroundColor: "#2a2739" }}>
+            <span className="sec-icon">✦</span>
+            Ad-Free HiAnime Alternatives
+          </div>
+          <div className="section-list">
+            {alternatives
+              .filter((s) => s.features.some((f) => f.toLowerCase().includes("ad-free") || f.toLowerCase().includes("no ads")))
+              .map((site, i) => (
+                <AlternativeCard key={site.name} site={site} rank={i + 1} />
+              ))}
+          </div>
+        </div>
+
+        {/* Hybrid Section */}
+        <div id="sec-hybrid" className="section" style={{ border: "1px solid #2f2920" }}>
+          <div className="section-title" style={{ backgroundColor: "#2f2920" }}>
+            <span className="sec-icon">⇅</span>
+            Hybrid (Stream + Download) HiAnime Alternatives
+          </div>
+          <div className="section-list">
+            {alternatives
+              .filter((s) => s.category === "hybrid")
+              .map((site, i) => (
+                <AlternativeCard key={site.name} site={site} rank={i + 1} />
+              ))}
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="faq-section">
+          <div className="faq-title">
+            Frequently Asked Questions About HiAnime Alternatives
+          </div>
+          {faqData.map((item) => (
+            <details key={item.q} className="faq-item">
+              <summary>{item.q}</summary>
+              <div className="faq-answer">{item.a}</div>
+            </details>
+          ))}
+        </div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+
+        {/* SEO Content Block */}
+        <div className="seo-block">
+          <h2>Why Use HiAnime Alternative?</h2>
           <p>
-            These are the highest-rated <strong>HiAnime alternatives</strong>{" "}
-            based on our testing. Each site has been evaluated for content
-            library size, streaming quality, user experience, and reliability.
-            Whether you need a <strong>free HiAnime alternative</strong> for
-            subbed anime or dubbed content, these sites have you covered.
+            <Link to="/about">HiAnime Alternative</Link> is your go-to resource for finding the best
+            <strong> HiAnime alternatives</strong> for free anime streaming. Based in{" "}
+            <strong>{siteConfig.location.city}, {siteConfig.location.country}</strong>, we test and
+            curate the top anime streaming sites so you always have a reliable{" "}
+            <strong>free HiAnime alternative</strong> ready.
           </p>
-          <div className="alt-list">
-            {top5.map((site, i) => (
-              <AlternativeCard key={site.name} site={site} rank={i + 1} />
-            ))}
-          </div>
-          <div className="center-cta">
-            <Link to="/alternatives" className="cta-btn">
-              See All {alternatives.length} HiAnime Alternatives &rarr;
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section-alt">
-        <div className="container">
-          <h2>Why Look for HiAnime Alternatives?</h2>
-          <div className="reasons-grid">
-            <div className="reason-card">
-              <h3>Site Downtime</h3>
-              <p>
-                HiAnime may experience downtime or domain changes. Having a list
-                of reliable <strong>HiAnime alternatives</strong> ensures you
-                never miss your favorite anime episodes.
-              </p>
-            </div>
-            <div className="reason-card">
-              <h3>Better Features</h3>
-              <p>
-                Some <strong>HiAnime alternative</strong> sites offer features
-                not available on HiAnime, such as ad-free streaming,
-                watch-together functionality, and better mobile support.
-              </p>
-            </div>
-            <div className="reason-card">
-              <h3>Larger Libraries</h3>
-              <p>
-                Different <strong>HiAnime alternatives</strong> may have anime
-                titles that aren&apos;t available on HiAnime, giving you access
-                to a wider range of content.
-              </p>
-            </div>
-            <div className="reason-card">
-              <h3>Faster Updates</h3>
-              <p>
-                Some <strong>free HiAnime alternative</strong> sites upload new
-                episodes faster than HiAnime, so you can watch the latest
-                releases sooner.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <h2>Frequently Asked Questions About HiAnime Alternatives</h2>
-          <div className="faq-list">
-            {faqJsonLd.mainEntity.map((item) => (
-              <details key={item.name} className="faq-item">
-                <summary>{item.name}</summary>
-                <p>{item.acceptedAnswer.text}</p>
-              </details>
-            ))}
-          </div>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-          />
-        </div>
-      </section>
-
-      <section className="section section-alt">
-        <div className="container">
-          <h2>About HiAnime Alternative</h2>
           <p>
-            <Link to="/about">HiAnime Alternative</Link> is a dedicated
-            resource based in{" "}
-            <strong>
-              {siteConfig.location.city}, {siteConfig.location.country}
-            </strong>{" "}
-            that helps anime fans find the best alternatives to HiAnime. We
-            regularly test and update our list of{" "}
-            <Link to="/alternatives">HiAnime alternatives</Link> to ensure all
-            recommended sites are working and provide a quality streaming
-            experience. Have questions?{" "}
-            <Link to="/contact">Contact us</Link> anytime.
+            Whether HiAnime is down, blocked, or you simply want better features, our{" "}
+            <Link to="/alternatives">complete alternatives list</Link> has you covered. Each site
+            is evaluated for content library, streaming quality, ad experience, and mobile support.
+            <Link to="/contact"> Contact us</Link> to suggest a site.
           </p>
         </div>
-      </section>
+      </div>
     </>
   );
 }
