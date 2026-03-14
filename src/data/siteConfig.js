@@ -16,7 +16,7 @@ const siteConfig = {
     address: "350 Fifth Avenue, Suite 4800",
   },
   social: {
-    discord: "https://discord.gg/hianimealternative",
+    discord: "https://discord.gg/Zsmd2kppYv",
     twitter: "https://twitter.com/hianimealts",
   },
   foundedYear: 2024,
