@@ -1,10 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import SEO from "../components/SEO";
 import AlternativeCard from "../components/AlternativeCard";
 import alternatives from "../data/alternatives";
 import siteConfig from "../data/siteConfig";
 
+function scrollToHash() {
+  const hash = window.location.hash;
+  if (hash) {
+    const el = document.querySelector(hash);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+}
+
 export default function Home() {
+  const location = useLocation();
+
+  useEffect(() => {
+    setTimeout(scrollToHash, 100);
+  }, [location]);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
